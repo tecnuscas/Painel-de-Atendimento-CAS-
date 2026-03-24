@@ -1,35 +1,35 @@
 # 🗺️ Painel de Gestão Territorial - Boa Vista (RR)
 
-Este repositório hospeda um ecossistema de mapas interativos e ferramentas digitais voltados para a **Rede de Proteção Social e de Direitos**. O objetivo é integrar dados geográficos para otimizar o atendimento técnico e a articulação intersetorial.
+Este repositório hospeda um sistema integrado de mapas interativos e ferramentas digitais para a **Rede de Proteção Social, Saúde e Direitos**. A plataforma consolida dados geográficos para facilitar a articulação intersetorial no município.
 
-## 🚀 O Painel Integrado (Dashboard)
+## 🚀 Interface Principal (Dashboard)
 
-A visualização principal é feita através do arquivo `index.html`, que consolida em uma única interface os seguintes mapas:
+Ao aceder ao `index.html`, terá um painel central que permite alternar entre diferentes camadas de gestão sem sair da página:
 
--   **CRAS**: Abrangência da Proteção Social Básica e localização de famílias do CadÚnico.
--   **CREAS**: Monitoramento de áreas com ocorrência de violação de direitos (Proteção Especial).
--   **Conselho Tutelar**: Delimitação territorial das zonas de atuação dos conselheiros.
--   **RAPS**: Pontos de atenção em saúde mental (CAPS, Unidades de Acolhimento e Urgências).
--   **Defensoria Pública**: Localização dos núcleos de assistência jurídica gratuita.
+1.  **🏘️ Vila Jardim (Página Inicial)**: Mapa detalhado do Residencial Vila Jardim, com as suas 2.992 unidades, servindo como o foco estratégico do projeto.
+2.  **CRAS**: Abrangência da Proteção Social Básica.
+3.  **CREAS**: Monitoramento de áreas de Proteção Especial (violação de direitos).
+4.  **Conselho Tutelar**: Zonas de atuação das unidades de garantia de direitos infantojuvenis.
+5.  **RAPS**: Rede de Atenção Psicossocial (CAPS e unidades de saúde mental).
+6.  **Defensoria**: Localização de núcleos de assistência jurídica gratuita.
 
-## 🏘️ Foco Estratégico: Residencial Vila Jardim
+## 📄 Ficha de Atendimento Integrada
 
-O projeto dedica atenção especial ao **Residencial Vila Jardim** (Bairro Cidade Satélite, Zona Oeste). 
-- **Escala**: 2.992 apartamentos entregues em 2015.
-- **Uso Técnico**: O mapeamento permite que os técnicos identifiquem a unidade de saúde (RAPS), o CRAS de referência e o Conselho Tutelar responsável por este complexo habitacional de alta densidade.
+O painel inclui o botão **"ABRIR FICHA"**, que carrega a **Ficha de Atendimento (CAS)** diretamente na tela.
+- **Vantagem**: Não é necessário baixar ficheiros `.exe`. O formulário é preenchido no navegador e pode ser impresso ou guardado em PDF (`Ctrl + P`).
 
-## 🛠️ Ferramentas Disponíveis
+## 🛠️ Funcionalidades Técnicas
 
--   **🔍 Busca por Logradouros**: Todos os mapas possuem barra de pesquisa para localização rápida de bairros.
--   **🖱️ Interatividade**:
-    -   **Duplo Clique no Mapa**: Reseta a visão para o panorama geral de Boa Vista.
-    -   **Duplo Clique no Marcador**: Zoom máximo (nível 18) no ponto de interesse.
--   **📥 Ficha de Atendimento**: O painel inclui um botão de acesso rápido para download do software de apoio (`.exe`).
+-   **🔍 Busca Multi-Camada**: Barra de pesquisa para encontrar bairros, condomínios ou unidades específicas.
+-   **🖱️ Atalhos de Navegação**:
+    -   **Duplo Clique no Mapa**: Reseta a visão para o panorama geral.
+    -   **Duplo Clique no Marcador**: Zoom imediato para nível de rua (18).
+-   **📱 Design Responsivo**: Otimizado para visualização em computadores, tablets e telemóveis.
 
-## 💻 Como Visualizar
+## 📂 Como Utilizar
 
-1.  **Acesso Direto**: [Link do seu GitHub Pages aqui]
-2.  **Uso Local**: Baixe o repositório e execute o arquivo `index.html` em seu navegador.
+1.  **Online**: Aceda através do link gerado pelo **GitHub Pages**.
+2.  **Localmente**: Clone o repositório e abra o ficheiro `index.html`.
 
 ---
-**Nota sobre LGPD:** Este repositório contém apenas ferramentas de visualização e malhas territoriais públicas. Dados sensíveis de usuários atendidos devem ser manipulados exclusivamente nos sistemas internos protegidos.
+**Nota Técnica:** Para o correto funcionamento, todos os ficheiros `.html` devem permanecer na mesma pasta raiz do repositório.
