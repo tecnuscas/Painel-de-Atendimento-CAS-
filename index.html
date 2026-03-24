@@ -3,11 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestão Territorial - Boa Vista</title>
+    <title>Painel de Gestão Territorial - Boa Vista</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; font-family: 'Segoe UI', sans-serif; overflow: hidden; }
+        /* Reset e Estrutura Base */
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            overflow: hidden; 
+            background-color: #1e272e;
+        }
         
-        /* Barra de Navegação Superior */
+        /* Barra de Navegação */
         .navbar {
             display: flex;
             background-color: #1e272e;
@@ -15,87 +23,144 @@
             padding: 10px 20px;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.4);
             z-index: 1000;
             position: relative;
+            border-bottom: 2px solid #05c46b;
         }
 
-        .navbar h1 { margin: 0; font-size: 14px; letter-spacing: 1px; color: #05c46b; }
+        .navbar h1 { 
+            margin: 0; 
+            font-size: 16px; 
+            letter-spacing: 1px; 
+            color: #05c46b;
+            text-transform: uppercase;
+        }
 
-        .menu-items { display: flex; gap: 5px; flex-wrap: wrap; }
+        /* Menu de Botões */
+        .menu-items { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+        }
         
         .btn-nav {
             background: #485460;
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 10px 14px;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 11px;
-            transition: 0.2s;
+            font-weight: 600;
+            transition: all 0.3s ease;
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .btn-nav:hover { background: #05c46b; }
-        .btn-nav.active { background: #05c46b; font-weight: bold; }
+        .btn-nav:hover { 
+            background: #05c46b; 
+            transform: translateY(-2px);
+        }
 
-        /* Estilos Especiais */
-        .btn-vila { background-color: #d35400; font-weight: bold; } /* Laranja para destaque */
+        .btn-nav.active { 
+            background: #05c46b; 
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        /* Cores de Destaque */
+        .btn-vila { background-color: #d35400; } /* Laranja */
         .btn-vila:hover { background-color: #e67e22; }
-        
-        .btn-ficha { background-color: #3c40c6; font-weight: bold; } /* Azul para a ficha */
+
+        .btn-ficha { background-color: #3c40c6; } /* Azul Royal */
         .btn-ficha:hover { background-color: #575fcf; }
 
-        /* Moldura do Conteúdo */
+        /* Container do Mapa (Iframe) */
         #content-frame {
             width: 100%;
-            height: calc(100% - 60px);
+            height: calc(100% - 62px);
             border: none;
+            background-color: #f1f2f6;
         }
 
+        /* Rodapé Informativo */
         .info-footer {
             position: absolute;
-            bottom: 15px;
-            left: 15px;
-            background: rgba(0, 0, 0, 0.7);
+            bottom: 20px;
+            left: 20px;
+            background: rgba(30, 39, 46, 0.9);
             color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 10px;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 11px;
             pointer-events: none;
+            border: 1px solid #05c46b;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Responsividade para Telas Pequenas */
+        @media (max-width: 768px) {
+            .navbar { flex-direction: column; gap: 10px; padding: 15px; }
+            .navbar h1 { font-size: 14px; }
+            #content-frame { height: calc(100% - 120px); }
         }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <h1>📍 REDE PROTEÇÃO BV</h1>
+        <h1>📍 Rede de Proteção BV</h1>
         
         <div class="menu-items">
-            <button class="btn-nav btn-vila active" onclick="carregar('mapa_vila_jardim_completo.html', this)">🏘️ Vila Jardim</button>
+            <button class="btn-nav btn-vila active" onclick="carregar('Mapa Vila Jardim.html', this)">
+                🏘️ Vila Jardim
+            </button>
+            
             <button class="btn-nav" onclick="carregar('Mapa_CRAS.html', this)">CRAS</button>
             <button class="btn-nav" onclick="carregar('Mapa_CREAS.html', this)">CREAS</button>
             <button class="btn-nav" onclick="carregar('Mapa_Conselho Tutelar.html', this)">Conselho</button>
             <button class="btn-nav" onclick="carregar('Mapa_RAPS.html', this)">RAPS</button>
             <button class="btn-nav" onclick="carregar('Mapa_Defensoria.html', this)">Defensoria</button>
             
-            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this)">📄 Abrir Ficha</button>
+            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this)">
+                📄 Abrir Ficha
+            </button>
         </div>
     </nav>
 
-    <iframe id="content-frame" src="mapa_vila_jardim_completo.html"></iframe>
+    <iframe id="content-frame" src="Mapa Vila Jardim.html" title="Conteúdo Territorial"></iframe>
 
     <div class="info-footer">
-        Área Estratégica: Residencial Vila Jardim | 2.992 Unidades
+        Foco Estratégico: <strong>Residencial Vila Jardim</strong> | Cidade Satélite
     </div>
 
     <script>
+        /**
+         * Função para trocar o conteúdo do iframe e gerenciar botões ativos
+         */
         function carregar(url, elemento) {
-            document.getElementById('content-frame').src = url;
+            const frame = document.getElementById('content-frame');
+            
+            // Adiciona um efeito de transição suave ao trocar
+            frame.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                frame.src = url;
+                frame.style.opacity = '1';
+            }, 150);
+
+            // Gerencia a classe 'active' nos botões
             const botoes = document.querySelectorAll('.btn-nav');
-            botoes.forEach(b => b.classList.remove('active'));
+            botoes.forEach(btn => btn.classList.remove('active'));
             elemento.classList.add('active');
         }
+
+        // Previne fechamento acidental se a ficha estiver sendo preenchida
+        window.onbeforeunload = function() {
+            return "Certifique-se de que salvou/imprimiu a ficha antes de sair.";
+        };
     </script>
 </body>
 </html>
