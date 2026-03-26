@@ -70,12 +70,11 @@
             box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
         }
 
-        /* Cores de Destaque */
+        /* Cores de Destaque por Bairro/Função */
         .btn-vila { background-color: #d35400; } /* Laranja */
-        .btn-vila:hover { background-color: #e67e22; }
-
-        .btn-ficha { background-color: #3c40c6; } /* Azul Royal */
-        .btn-ficha:hover { background-color: #575fcf; }
+        .btn-satelite { background-color: #2980b9; } /* Azul */
+        .btn-araceli { background-color: #8e44ad; } /* Roxo */
+        .btn-ficha { background-color: #27ae60; } /* Verde */
 
         /* Container do Mapa (Iframe) */
         #content-frame {
@@ -83,6 +82,7 @@
             height: calc(100% - 62px);
             border: none;
             background-color: #f1f2f6;
+            transition: opacity 0.2s;
         }
 
         /* Rodapé Informativo */
@@ -100,11 +100,10 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
-        /* Responsividade para Telas Pequenas */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
             .navbar { flex-direction: column; gap: 10px; padding: 15px; }
             .navbar h1 { font-size: 14px; }
-            #content-frame { height: calc(100% - 120px); }
+            #content-frame { height: calc(100% - 140px); }
         }
     </style>
 </head>
@@ -114,17 +113,23 @@
         <h1>📍 Rede de Proteção BV</h1>
         
         <div class="menu-items">
-            <button class="btn-nav btn-vila active" onclick="carregar('Mapa Vila Jardim.html', this)">
+            <button class="btn-nav btn-vila active" onclick="carregar('Mapa Vila Jardim.html', this, 'Residencial Vila Jardim')">
                 🏘️ Vila Jardim
             </button>
             
-            <button class="btn-nav" onclick="carregar('Mapa_CRAS.html', this)">CRAS</button>
-            <button class="btn-nav" onclick="carregar('Mapa_CREAS.html', this)">CREAS</button>
-            <button class="btn-nav" onclick="carregar('Mapa_Conselho Tutelar.html', this)">Conselho</button>
-            <button class="btn-nav" onclick="carregar('Mapa_RAPS.html', this)">RAPS</button>
-            <button class="btn-nav" onclick="carregar('Mapa_Defensoria.html', this)">Defensoria</button>
+            <button class="btn-nav btn-satelite" onclick="carregar('Bairro Cidade Satélite.html', this, 'Cidade Satélite')">
+                🛰️ Cidade Satélite
+            </button>
+
+            <button class="btn-nav btn-araceli" onclick="carregar('Mapa_Araceli.html', this, 'Araceli Souto Maior')">
+                🏡 Araceli
+            </button>
             
-            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this)">
+            <button class="btn-nav" onclick="carregar('Mapa_CRAS.html', this, 'Rede CRAS')">CRAS</button>
+            <button class="btn-nav" onclick="carregar('Mapa_CREAS.html', this, 'Rede CREAS')">CREAS</button>
+            <button class="btn-nav" onclick="carregar('Mapa_Conselho Tutelar.html', this, 'Conselho Tutelar')">Conselho</button>
+            
+            <button class="btn-nav btn-ficha" onclick="carregar('Ficha de Atendimento (CAS).html', this, 'Ficha de Atendimento')">
                 📄 Abrir Ficha
             </button>
         </div>
@@ -133,31 +138,27 @@
     <iframe id="content-frame" src="Mapa Vila Jardim.html" title="Conteúdo Territorial"></iframe>
 
     <div class="info-footer">
-        Foco Estratégico: <strong>Residencial Vila Jardim</strong> | Cidade Satélite
+        Foco Estratégico: <strong id="foco-nome">Residencial Vila Jardim</strong> | Boa Vista, RR
     </div>
 
     <script>
-        /**
-         * Função para trocar o conteúdo do iframe e gerenciar botões ativos
-         */
-        function carregar(url, elemento) {
+        function carregar(url, elemento, nomeFoco) {
             const frame = document.getElementById('content-frame');
+            const focoTexto = document.getElementById('foco-nome');
             
-            // Adiciona um efeito de transição suave ao trocar
-            frame.style.opacity = '0.5';
+            frame.style.opacity = '0.3';
             
             setTimeout(() => {
                 frame.src = url;
+                focoTexto.innerText = nomeFoco;
                 frame.style.opacity = '1';
             }, 150);
 
-            // Gerencia a classe 'active' nos botões
             const botoes = document.querySelectorAll('.btn-nav');
             botoes.forEach(btn => btn.classList.remove('active'));
             elemento.classList.add('active');
         }
 
-        // Previne fechamento acidental se a ficha estiver sendo preenchida
         window.onbeforeunload = function() {
             return "Certifique-se de que salvou/imprimiu a ficha antes de sair.";
         };
