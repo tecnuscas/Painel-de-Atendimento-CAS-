@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel CAS - Gestão Territorial</title>
+    <title>SISTEMA CAS 2026 - SETRABES</title>
     
     <script>
         if (sessionStorage.getItem('logado_bv') !== 'true') {
@@ -12,116 +12,128 @@
     </script>
 
     <style>
+        :root {
+            --primary: #05c46b;
+            --primary-dark: #04a359;
+            --bg-dark: #1e272e;
+            --sidebar-bg: #2d3436;
+            --text-light: #f1f2f6;
+            --accent: #0fbcf9;
+        }
+
         body, html { 
             margin: 0; padding: 0; height: 100%; width: 100%;
-            font-family: 'Segoe UI', sans-serif; overflow: hidden; background-color: #1e272e; 
-            display: flex; 
+            font-family: 'Inter', 'Segoe UI', sans-serif; overflow: hidden; 
+            background-color: var(--bg-dark); display: flex; 
         }
         
-        /* Barra Lateral Esquerda */
+        /* Barra Lateral */
         .sidebar-left {
-            width: 260px;
-            background: #1e272e;
-            border-right: 2px solid #05c46b;
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            gap: 6px;
-            box-shadow: 4px 0 12px rgba(0,0,0,0.5);
-            overflow-y: auto;
-            z-index: 1000;
+            width: 280px; background: var(--sidebar-bg);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; padding: 20px 15px;
+            gap: 8px; box-shadow: 10px 0 30px rgba(0,0,0,0.3);
+            overflow-y: auto; z-index: 1000;
         }
 
         .sidebar-left h1 { 
-            font-size: 14px; color: #05c46b; text-transform: uppercase; 
-            font-weight: 800; margin-bottom: 20px; text-align: center;
-            border-bottom: 1px solid #34495e; padding-bottom: 10px;
+            font-size: 12px; color: var(--primary); text-transform: uppercase; 
+            letter-spacing: 2px; margin-bottom: 25px; text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px;
         }
 
-        /* Área do Conteúdo e Rodapé Oficial */
-        .main-content {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            position: relative;
+        /* Container do Botão (Menu + Nova Janela) */
+        .nav-item {
+            display: flex; gap: 4px; align-items: stretch;
         }
 
-        #content-frame { 
-            flex: 1; 
-            border: none; 
-            background: #f1f2f6; 
-        }
-
-        /* Rodapé Institucional SETRABES */
-        .setrabes-footer {
-            background: #f8f9fa;
-            color: #2f3640;
-            padding: 10px 20px;
-            border-top: 1px solid #dcdde1;
-            font-size: 11px;
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .setrabes-footer strong { color: #05c46b; text-transform: uppercase; }
-
-        /* Botões da Navegação */
         .btn-nav {
-            background: #485460; color: white; border: none; padding: 12px;
-            cursor: pointer; border-radius: 6px; font-size: 10px; font-weight: 700;
-            transition: 0.2s; text-transform: uppercase; text-align: left;
-            display: flex; align-items: center; gap: 10px;
+            flex: 1; background: rgba(255,255,255,0.05); color: var(--text-light); 
+            border: none; padding: 12px 15px; cursor: pointer; border-radius: 8px 0 0 8px; 
+            font-size: 11px; font-weight: 600; transition: 0.3s; 
+            text-transform: uppercase; text-align: left; display: flex; align-items: center; gap: 10px;
         }
 
-        .btn-nav:hover { background: #05c46b; color: #1e272e; }
-        .btn-nav.active { background: #05c46b; color: #1e272e; box-shadow: 0 0 10px rgba(5, 196, 107, 0.4); }
+        .btn-pop {
+            background: rgba(255,255,255,0.1); color: var(--text-light); border: none;
+            padding: 0 12px; cursor: pointer; border-radius: 0 8px 8px 0;
+            transition: 0.3s; display: flex; align-items: center; font-size: 14px;
+        }
 
-        .btn-prioridade { border-left: 4px solid #05c46b; background: #34495e; }
-        .btn-google-form { background: #27ae60 !important; color: white; }
-        .btn-google-sheet { background: #2980b9 !important; color: white; margin-bottom: 15px; }
+        .btn-nav:hover, .btn-pop:hover { background: var(--primary); color: var(--bg-dark); }
+        .nav-item.active .btn-nav { background: var(--primary); color: var(--bg-dark); }
         
-        .btn-sair { 
-            background: #eb3b5a; color: white; border: none; padding: 12px; 
-            border-radius: 6px; font-size: 11px; font-weight: 800; 
-            cursor: pointer; margin-top: auto; text-align: center; 
-        }
+        /* Destaques */
+        .btn-form { border-left: 4px solid var(--primary); }
+        .btn-sheet { border-left: 4px solid var(--accent); }
 
-        @media (max-width: 800px) {
+        .btn-sair { 
+            background: #eb3b5a; color: white; border: none; padding: 14px; 
+            border-radius: 8px; font-size: 11px; font-weight: 800; 
+            cursor: pointer; margin-top: auto; transition: 0.3s;
+        }
+        .btn-sair:hover { background: #ff4d4d; transform: scale(1.02); }
+
+        /* Área Principal */
+        .main-content { flex: 1; display: flex; flex-direction: column; height: 100vh; }
+        #content-frame { flex: 1; border: none; background: #dfe6e9; }
+
+        /* Rodapé */
+        .setrabes-footer {
+            background: white; color: #636e72; padding: 12px;
+            font-size: 10px; text-align: center; border-top: 1px solid #d63031;
+        }
+        .setrabes-footer b { color: #2d3436; }
+
+        @media (max-width: 900px) {
             body { flex-direction: column; }
-            .sidebar-left { width: 100%; height: auto; border-right: none; border-bottom: 2px solid #05c46b; flex-direction: row; flex-wrap: wrap; }
-            .setrabes-footer { font-size: 9px; }
+            .sidebar-left { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; }
+            .btn-pop { display: none; } /* Esconde popups no mobile para simplificar */
         }
     </style>
 </head>
 <body>
 
     <nav class="sidebar-left">
-        <h1>📍 Painel CAS</h1>
+        <h1>Gestão CAS 2026</h1>
         
-        <button class="btn-nav btn-prioridade active" onclick="carregar('vila-jardim.html', this)">🏘️ Vila Jardim</button>
-        <button class="btn-nav btn-prioridade" onclick="carregar('cidade-satelite.html', this)">🛰️ Satélite</button>
+        <div class="nav-item active">
+            <button class="btn-nav" onclick="carregar('vila-jardim.html', this.parentElement)">🏘️ Mapa Vila Jardim</button>
+            <button class="btn-pop" onclick="abrirNova('vila-jardim.html')" title="Abrir em nova aba">↗</button>
+        </div>
+
+        <div class="nav-item">
+            <button class="btn-nav" onclick="carregar('cidade-satelite.html', this.parentElement)">🛰️ Mapa Cidade Satélite</button>
+            <button class="btn-pop" onclick="abrirNova('cidade-satelite.html')">↗</button>
+        </div>
+
+        <div class="nav-item">
+            <button class="btn-nav btn-form" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this.parentElement)">📝 Inscrição (CAS 2026)</button>
+            <button class="btn-pop" onclick="abrirNova('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform')">↗</button>
+        </div>
+
+        <div class="nav-item">
+            <button class="btn-nav btn-sheet" onclick="carregar('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit?rm=minimal', this.parentElement)">📊 Matrículados 2026</button>
+            <button class="btn-pop" onclick="abrirNova('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit')">↗</button>
+        </div>
+
+        <div class="nav-item"><button class="btn-nav" onclick="carregar('cras.html', this.parentElement)">🏢 Mapa CRAS</button><button class="btn-pop" onclick="abrirNova('cras.html')">↗</button></div>
+        <div class="nav-item"><button class="btn-nav" onclick="carregar('creas.html', this.parentElement)">🏢 Mapa CREAS</button><button class="btn-pop" onclick="abrirNova('creas.html')">↗</button></div>
+        <div class="nav-item"><button class="btn-nav" onclick="carregar('conselho-tutelar.html', this.parentElement)">🛡️ Mapa Conselho Tutelar</button><button class="btn-pop" onclick="abrirNova('conselho-tutelar.html')">↗</button></div>
+        <div class="nav-item"><button class="btn-nav" onclick="carregar('defensoria.html', this.parentElement)">⚖️ Mapa Defensoria</button><button class="btn-pop" onclick="abrirNova('defensoria.html')">↗</button></div>
+        <div class="nav-item"><button class="btn-nav" onclick="carregar('raps.html', this.parentElement)">🧠 Mapa RAPS</button><button class="btn-pop" onclick="abrirNova('raps.html')">↗</button></div>
+        <div class="nav-item"><button class="btn-nav" onclick="carregar('ficha-atendimento.html', this.parentElement)">📄 Atendimento Individual</button><button class="btn-pop" onclick="abrirNova('ficha-atendimento.html')">↗</button></div>
         
-        <button class="btn-nav btn-google-form" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this)">📝 Abrir Ficha</button>
-        <button class="btn-nav btn-google-sheet" onclick="carregar('https://docs.google.com/spreadsheets/d/1bHXEpfJYvxkxgH1m584YorvgnGVrd1j4vYhPLuBW3AM/edit?rm=minimal', this)">📊 Planilha de Dados</button>
-        
-        <button class="btn-nav" onclick="carregar('cras.html', this)">🏢 CRAS</button>
-        <button class="btn-nav" onclick="carregar('creas.html', this)">🏢 CREAS</button>
-        <button class="btn-nav" onclick="carregar('conselho-tutelar.html', this)">🛡️ Conselho Tutelar</button>
-        <button class="btn-nav" onclick="carregar('defensoria.html', this)">⚖️ Defensoria</button>
-        <button class="btn-nav" onclick="carregar('raps.html', this)">🧠 RAPS</button>
-        <button class="btn-nav" onclick="carregar('ficha-atendimento.html', this)">📄 Ficha Interna</button>
-        
-        <button class="btn-sair" onclick="logout()">SAIR</button>
+        <button class="btn-sair" onclick="logout()">ENCERRAR SESSÃO</button>
     </nav>
 
     <main class="main-content">
         <iframe id="content-frame" src="vila-jardim.html"></iframe>
 
         <footer class="setrabes-footer">
-            <strong>Secretaria de Estado do Trabalho e Bem-Estar Social</strong><br>
-            Avenida Mário Homem de Melo, nº 2310, Mecejana - Boa Vista - Roraima – Brasil - CEP: 69304-350<br>
-            E-mail: gabinetesetrabes@gmail.com
+            <b>SECRETARIA DE ESTADO DO TRABALHO E BEM-ESTAR SOCIAL</b><br>
+            Avenida Mário Homem de Melo, nº 2310, Mecejana | Boa Vista - Roraima – Brasil - CEP: 69304-350<br>
+            Contato: gabinetesetrabes@gmail.com
         </footer>
     </main>
 
@@ -129,12 +141,16 @@
         function carregar(url, elemento) {
             const frame = document.getElementById('content-frame');
             frame.src = url;
-            document.querySelectorAll('.btn-nav').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             elemento.classList.add('active');
         }
 
+        function abrirNova(url) {
+            window.open(url, '_blank');
+        }
+
         function logout() {
-            if(confirm("Deseja encerrar a sessão?")) {
+            if(confirm("Deseja sair do sistema?")) {
                 sessionStorage.clear();
                 window.location.href = "login.html";
             }
