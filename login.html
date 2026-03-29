@@ -9,16 +9,14 @@
     
     <style>
         :root {
-            --primary-color: #05c46b;
-            --accent-color: #0fbcf9;
-            --dark-bg: #1e272e;
-            --card-bg: rgba(45, 52, 54, 0.95);
+            --primary-color: #00b894; /* Verde mais vivo */
+            --accent-color: #0984e3;  /* Azul vibrante */
+            --dark-bg: #0f1418;
+            --card-bg: #ffffff;      /* Card branco para máximo contraste */
         }
 
         body { 
-            background: linear-gradient(-45deg, #1e272e, #2d3436, #05c46b, #1e272e);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background: radial-gradient(circle at center, #2d3436 0%, #0f1418 100%);
             display: flex; 
             align-items: center; 
             justify-content: center; 
@@ -27,105 +25,125 @@
             font-family: 'Segoe UI', system-ui, sans-serif; 
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
         .login-card { 
             background: var(--card-bg); 
             padding: 40px; 
-            border-radius: 24px; 
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
+            border-radius: 20px; 
             width: 100%; 
-            max-width: 400px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6); 
+            max-width: 420px; 
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5); 
             position: relative;
-            overflow: hidden;
+            border: none;
         }
 
-        /* Detalhe luminoso no topo */
+        /* Barra de destaque superior */
         .login-card::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 5px;
+            top: 0; left: 0; width: 100%; height: 8px;
             background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 20px 20px 0 0;
         }
 
         .brand-logo {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: var(--primary-color);
             text-align: center;
             margin-bottom: 10px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
 
-        h2 { color: white; text-align: center; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 5px; }
-        .subtitle { color: #a4b0be; text-align: center; font-size: 0.85rem; margin-bottom: 30px; text-transform: uppercase; font-weight: 600; }
+        h2 { 
+            color: #2d3436; 
+            text-align: center; 
+            font-weight: 900; 
+            letter-spacing: -1px; 
+            margin-bottom: 5px; 
+            text-transform: uppercase;
+        }
+
+        .subtitle { 
+            color: #636e72; 
+            text-align: center; 
+            font-size: 0.9rem; 
+            margin-bottom: 35px; 
+            text-transform: uppercase; 
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
 
         .input-group-text {
-            background: #2f3640;
-            border: 1px solid #485460;
-            color: #dcdde1;
+            background: #f1f2f6;
+            border: 2px solid #dfe4ea;
+            color: #2f3542;
+            font-size: 1.2rem;
         }
 
         .form-control { 
-            background: #2f3640; 
-            border: 1px solid #485460; 
-            color: white; 
-            padding: 12px;
-            transition: 0.3s;
+            background: #f1f2f6; 
+            border: 2px solid #dfe4ea; 
+            color: #2d3436; 
+            padding: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .form-control::placeholder {
+            color: #a4b0be;
+            font-weight: 400;
         }
 
         .form-control:focus { 
-            background: #353b48; 
-            border-color: var(--primary-color); 
-            color: white; 
-            box-shadow: 0 0 15px rgba(5, 196, 107, 0.2); 
+            background: #ffffff; 
+            border-color: var(--accent-color); 
+            color: #000; 
+            box-shadow: 0 0 12px rgba(9, 132, 227, 0.2); 
         }
 
         .btn-entrar { 
             background: var(--primary-color); 
-            color: #1e272e; 
+            color: white; 
             border: none; 
             width: 100%; 
-            padding: 14px; 
+            padding: 16px; 
             font-weight: 800; 
-            margin-top: 20px; 
-            transition: 0.4s; 
+            margin-top: 25px; 
+            transition: all 0.3s ease; 
             border-radius: 12px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1rem;
         }
 
         .btn-entrar:hover:not(:disabled) { 
-            background: #049f58; 
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(5, 196, 107, 0.3);
+            background: #009475; 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 184, 148, 0.4);
         }
 
         .btn-entrar:disabled {
-            background: #485460;
+            background: #b2bec3;
             cursor: not-allowed;
-            opacity: 0.7;
         }
 
         .error-container {
-            background: rgba(235, 59, 90, 0.1);
-            border-left: 4px solid #eb3b5a;
-            padding: 10px;
-            margin-top: 15px;
+            background: #fff5f5;
+            border: 1px solid #ffcccc;
+            border-left: 5px solid #d63031;
+            padding: 12px;
+            margin-top: 20px;
             display: none;
-            border-radius: 4px;
+            border-radius: 8px;
         }
 
-        .error-msg { color: #ff7675; font-size: 0.85rem; margin: 0; font-weight: 600; }
+        .error-msg { color: #d63031; font-size: 0.9rem; margin: 0; font-weight: 700; text-align: center; }
 
         .footer-text {
-            color: #747d8c;
+            color: #b2bec3;
             text-align: center;
-            font-size: 0.75rem;
-            margin-top: 25px;
+            font-size: 0.8rem;
+            margin-top: 30px;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -133,19 +151,19 @@
 
     <div class="login-card">
         <div class="brand-logo">
-            <i class="bi bi-shield-lock-fill"></i>
+            <i class="bi bi-shield-check-fill"></i>
         </div>
         <h2>REDE DE PROTEÇÃO</h2>
         <div class="subtitle">Painel de Atendimento CAS</div>
 
         <form id="formLogin">
             <div class="input-group mb-3">
-                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
                 <input type="text" id="user" class="form-control" placeholder="Usuário Técnico" required autocomplete="off">
             </div>
 
-            <div class="input-group mb-3">
-                <span class="input-group-text"><i class="bi bi-key-fill"></i></span>
+            <div class="input-group mb-4">
+                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
                 <input type="password" id="pass" class="form-control" placeholder="Senha de Acesso" required>
             </div>
 
@@ -154,12 +172,12 @@
             </button>
 
             <div id="errorContainer" class="error-container">
-                <p id="error" class="error-msg">⚠️ Acesso negado. Credenciais inválidas.</p>
+                <p id="error" class="error-msg">⚠️ USUÁRIO OU SENHA INCORRETOS</p>
             </div>
         </form>
 
         <div class="footer-text">
-            Sessão monitorada para fins de segurança.
+            SISTEMA DE ACESSO RESTRITO
         </div>
     </div>
 
@@ -176,14 +194,12 @@
             const btnSubmit = document.getElementById('btnSubmit');
             const btnText = document.getElementById('btnText');
 
-            // Simulação de carregamento (melhora UX)
             btnSubmit.disabled = true;
-            btnText.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Validando...`;
+            btnText.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> AUTENTICANDO...`;
 
             setTimeout(() => {
                 if(u === "cas" && s === "vilajardim") {
                     sessionStorage.setItem('logado_bv', 'true');
-                    sessionStorage.setItem('last_login', new Date().getTime());
                     window.location.href = "index.html"; 
                 } else {
                     attempts++;
@@ -196,7 +212,7 @@
                         blockSystem();
                     }
                 }
-            }, 800);
+            }, 1000);
         });
 
         function blockSystem() {
@@ -207,7 +223,7 @@
             btnSubmit.disabled = true;
             
             const timer = setInterval(() => {
-                btnText.innerText = `BLOQUEADO (${timeLeft}s)`;
+                btnText.innerText = `BLOQUEADO POR ${timeLeft}s`;
                 timeLeft--;
 
                 if(timeLeft < 0) {
