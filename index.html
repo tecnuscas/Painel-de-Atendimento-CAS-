@@ -189,6 +189,22 @@
         </div>
 
         <div class="nav-group">
+            <div class="nav-label">Administrativo</div>
+            <div class="nav-item">
+                <button class="btn-nav" onclick="carregar('https://sei.rr.gov.br/portalsei/', this.parentElement)">
+                    <i class="bi bi-pen"></i> Assinar Relatório (SEI)
+                </button>
+                <button class="btn-pop" onclick="abrirNova('https://sei.rr.gov.br/portalsei/')"><i class="bi bi-box-arrow-up-right"></i></button>
+            </div>
+            <div class="nav-item">
+                <button class="btn-nav" onclick="carregar('https://servidor.rr.gov.br/#/login', this.parentElement)">
+                    <i class="bi bi-person-badge"></i> Dados Pessoais
+                </button>
+                <button class="btn-pop" onclick="abrirNova('https://servidor.rr.gov.br/#/login')"><i class="bi bi-box-arrow-up-right"></i></button>
+            </div>
+        </div>
+
+        <div class="nav-group">
             <div class="nav-label">Sistemas 2026</div>
             <div class="nav-item">
                 <button class="btn-nav" onclick="carregar('https://docs.google.com/forms/d/e/1FAIpQLSez0haWDLb9rjfvoaWWt0kuMg08qwKx7LLhhyRhzDOojVVxpg/viewform?embedded=true', this.parentElement)">
@@ -236,6 +252,10 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Google_Drive_icon_%282020%29.svg" alt="Drive">
             </button>
             <div class="fab-list">
+                <a href="https://drive.google.com/drive/folders/1YGruf7xXsUTcwYhE0Ibte1g9nvmJojs6?usp=drive_link" target="_blank" class="fab-link-wrapper">
+                    <span class="fab-label" style="background: var(--accent-blue);">PASTA GERAL</span> <div class="fab-item" style="color: var(--primary);"><i class="bi bi-folder-fill"></i></div>
+                </a>
+                
                 <a href="https://drive.google.com/drive/folders/1nysuiLpW_fkmET_YXzwmoNYljmklJ28W" target="_blank" class="fab-link-wrapper">
                     <span class="fab-label">Larissa</span> <div class="fab-item"><i class="bi bi-folder2-open"></i></div>
                 </a>
