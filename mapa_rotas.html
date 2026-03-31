@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GERADOR DE ROTAS - SATÉLITE/VILA JARDIM</title>
+    <style>
+        :root {
+            --primary: #004a8d;
+            --secondary: #6f42c1;
+            --success: #27ae60;
+            --bg: #f4f7f9;
+        }
+
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 20px; color: #333; }
+        
+        .card { 
+            background: white; padding: 20px; border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 20px; 
+        }
+
+        .header-title {
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .inputs-topo { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        
+        label { display: block; font-weight: bold; font-size: 11px; color: var(--primary); margin-bottom: 5px; text-transform: uppercase; }
+        input, select { 
+            width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; 
+            box-sizing: border-box; font-size: 14px; outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+
+        .btn { 
+            padding: 12px; border: none; border-radius: 8px; cursor: pointer; 
+            font-weight: bold; color: white; transition: 0.2s; display: flex; 
+            align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-add { background: var(--primary); width: 100%; margin-top: 10px; }
+        .btn-opt { background: var(--secondary); width: 100%; font-size: 16px; margin: 15px 0; }
+        .btn-maps { background: var(--success); margin-bottom: 8px; width: 100%; font-size: 13px; }
+
+        .layout-principal { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
+        
+        #listaStatus { 
+            max-height: 450px; overflow-y: auto; border: 1px solid #edf2f7; 
+            border-radius: 8px; background: #f8fafc; 
+        }
+
+        .route-item { 
+            display: flex; align-items: center; padding: 12px; 
+            border-bottom: 1px solid #edf2f7; font-size: 13px; 
+            background: white; cursor: pointer; transition: 0.2s;
+        }
+        .route-item:hover { background: #f1f5f9; }
+        
+        .num-bola { 
+            background: var(--primary); color: white; width: 24px; height: 24px; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 11px; margin-right: 12px; flex-shrink: 0; 
+        }
+
+        .loader { 
+            display: none; text-align: center; padding: 20px; 
+            color: var(--secondary); font-weight: bold; 
+        }
+
+        @media (max-width: 900px) { .layout-principal { grid-template-columns: 1fr; } }
+        @media print { .no-print { display: none; } }
+    </style>
+</head>
+<body>
+
+    <h1 class="header-title no-print">GERADOR DE ROTAS</h1>
+
+    <div class="card no-print">
+        <div class="inputs-topo">
+            <div>
+                <label>📍 Ponto de Partida (Sua Base):</label>
+                <input type="text" id="partida" placeholder="Ex: Av. Universo, 100">
+            </div>
+            <div>
+                <label>🏘️ Selecione o Local:</label>
+                <select id="bairro" onchange="carregarSugestoes()">
+                    <option value="">Selecione...</option>
+                    <option value="Cidade Satélite">Cidade Satélite</option>
+                    <option value="Vila Jardim">Vila Jardim (Residencial)</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label>🏠 Digite a Rua:</label>
+            <input type="text" id="novaRua" list="listaRuas" placeholder="Digite a rua e pressione Enter..." onkeypress="if(event.key==='Enter') adicionarPonto()">
+            <datalist id="listaRuas"></datalist>
+            <button class="btn btn-add" onclick="adicionarPonto()">➕ ADICIONAR À LISTA</button>
+        </div>
+    </div>
+
+    <div class="layout-principal">
+        <aside class="card">
+            <h3 style="margin-top: 0; color: var(--primary);">Entregas (<span id="contador">0</span>/80)</h3>
+            
+            <div id="listaStatus">
+                <p style="text-align: center; color: #a0aec0; padding: 20px;">Adicione endereços para começar.</p>
+            </div>
+
+            <div id="areaAcoes" style="display: none; margin-top: 20px;">
+                <button class="btn btn-opt" onclick="otimizarRota()">⚡ OTIMIZAR E GERAR TRECHOS</button>
+                <div id="loader" class="loader">📍 Mapeando endereços...</div>
+                <div id="linksMaps"></div>
+                <button class="btn" style="background: #4a5568; width: 100%; margin-top: 10px;" onclick="window.print()">📄 IMPRIMIR ROTEIRO</button>
+            </div>
+        </aside>
+
+        <main class="card" style="padding: 10px;">
+            <label style="padding: 5px 10px; display: block; font-size: 12px;">Visualização do Mapa:</label>
+            <iframe id="mapaFrame" src="about:blank" width="100%" height="580" style="border:0; border-radius: 8px; background: #e2e8f0;"></iframe>
+        </main>
+    </div>
+
+    <script>
+        const baseRuas = {
+            "Cidade Satélite": ["Avenida Consolação de Matos", "Avenida da Terra", "Avenida das Galáxias", "Avenida Gêmeos", "Avenida Jardim", "Avenida Sebastião Correia Lira", "Avenida Teresa Maciel", "Avenida Universo", "Avenida Unicamp", "Avenida dos Operários", "Avenida Brasil", "Avenida Parime Brasil", "Alameda Antares", "Rua 01", "Rua 02", "Rua 03", "Rua 04", "Rua 05", "Rua 06", "Rua B", "Rua C", "Rua J", "Rua L", "Rua N", "Rua P", "Rua R", "Rua S", "Rua R-11", "Rua R-24", "Rua J-5", "Rua J-7", "Rua J-8", "Rua NC-1", "Rua NC-2", "Rua NC-3", "Rua Andrômeda", "Rua Aquário", "Rua Capricórnio", "Rua Carina", "Rua Cassiopéia", "Rua Centaurus", "Rua Cisne", "Rua Cruzeiro do Sul", "Rua Câncer", "Rua Escorpião", "Rua Fênix", "Rua Halley", "Rua Hércules", "Rua Júpiter", "Rua Leão", "Rua Libra", "Rua Marte", "Rua Mercúrio", "Rua Netuno", "Rua Peixes", "Rua Plutão", "Rua Pégasus", "Rua Sagitário", "Rua Saturno", "Rua Sirius", "Rua Taurus", "Rua Urano", "Rua Ursa Maior", "Rua Ursa Menor", "Rua Vega", "Rua Dom Apparecido José Dias", "Rua Izidio Lira", "Rua Josemar Batista de Souza", "Rua José Brock", "Rua João Carlos Amazonas", "Rua Manoel Adriano Girão", "Rua Maria Martins de Almeida", "Rua Maria das Graças Paulino Cavalcante", "Rua Mimosa", "Rua Morada do Sol", "Rua Nascer do Sol", "Rua Neuso Salomão", "Rua Ondite de Lima Pereira", "Rua Pedro Camargo", "Rua Por do Sol", "Rua Professora Maria Eugênia", "Rua Raimundo Nonato Dias", "Rua Salva do Campo", "Rua Sidreira", "Rua Telegrafista Rocha", "Rua Tenente Azevedo Cruz", "Rua Tenente Matos", "Rua Tiam Fook", "Rua Unicórnio", "Rua Faculdade Atual da Amazônia", "Rua Faculdade Cathedral", "Rua Faculdade Roraimense de Ensino Superior", "Rua Universidade Federal de Roraima", "Rua Universidade Estadual de Roraima", "Rua Universidade Paulista", "Rua Universidade São Paulo", "Rua Universidade Estácio de Sá", "Rua Ulbra", "Rua Unfes"],
+            "Vila Jardim": ["Avenida Jardim", "Rua OP-IV", "Rua OP-V", "Rua OP-VI", "Rua OP-VII", "Rua OP-VIII", "Rua OP-IX", "Rua OP-X", "Rua OP-XI", "Rua OP-XII", "Rua OP-XIII", "Rua OP-XIV", "Rua OP-XV", "Rua OP-XVI", "Rua OP-XVII", "Rua OP-XIX", "Rua OP-XX", "Rua OP-XXI", "Rua NC-1", "Rua NC-2", "Rua NC-3", "Rua dos Trabalhadores"]
+        };
+
+        let pontos = [];
+
+        function carregarSugestoes() {
+            const bairro = document.getElementById('bairro').value;
+            const datalist = document.getElementById('listaRuas');
+            datalist.innerHTML = '';
+            if (baseRuas[bairro]) {
+                baseRuas[bairro].forEach(rua => {
+                    const option = document.createElement('option');
+                    option.value = rua;
+                    datalist.appendChild(option);
+                });
+            }
+        }
+
+        function adicionarPonto() {
+            const input = document.getElementById('novaRua');
+            const valor = input.value.trim();
+            if (valor && pontos.length < 80) {
+                pontos.push(valor);
+                input.value = '';
+                atualizarUI();
+                focarNoMapa(valor);
+            }
+        }
+
+        function atualizarUI() {
+            const container = document.getElementById('listaStatus');
+            document.getElementById('contador').innerText = pontos.length;
+            document.getElementById('areaAcoes').style.display = pontos.length > 0 ? 'block' : 'none';
+            
+            if (pontos.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #a0aec0; padding: 20px;">Lista vazia.</p>';
+                return;
+            }
+
+            container.innerHTML = '';
+            pontos.forEach((rua, i) => {
+                const item = document.createElement('div');
+                item.className = 'route-item';
+                item.innerHTML = `<div class="num-bola">${i + 1}</div><div style="flex:1">${rua}</div><button onclick="remover(${i})" style="background:none; border:none; color:#e53e3e; cursor:pointer; font-weight:bold;">✕</button>`;
+                item.onclick = (e) => { if(e.target.tagName !== 'BUTTON') focarNoMapa(rua); };
+                container.appendChild(item);
+            });
+        }
+
+        function remover(i) {
+            pontos.splice(i, 1);
+            atualizarUI();
+        }
+
+        function focarNoMapa(rua) {
+            const bairro = document.getElementById('bairro').value;
+            const enderecoFull = `${rua}, ${bairro}, Boa Vista, RR`;
+            const url = `https://www.google.com/maps?q=${encodeURIComponent(enderecoFull)}&output=embed`;
+            document.getElementById('mapaFrame').src = url;
+        }
+
+        async function otimizarRota() {
+            const base = document.getElementById('partida').value;
+            const bairro = document.getElementById('bairro').value;
+            if (!base) return alert("Informe o Ponto de Partida!");
+
+            document.getElementById('loader').style.display = 'block';
+            
+            try {
+                const listaFull = [base, ...pontos];
+                const coordenadas = [];
+
+                for (let local of listaFull) {
+                    const query = `${local}, ${bairro}, Boa Vista, RR`;
+                    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`);
+                    const data = await res.json();
+                    
+                    if (data[0]) {
+                        coordenadas.push({ nome: local, lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) });
+                    }
+                    await new Promise(r => setTimeout(r, 600)); 
+                }
+
+                if (coordenadas.length < 2) throw new Error("Endereços não encontrados.");
+
+                let ordenados = [];
+                let restantes = [...coordenadas];
+                let atual = restantes.shift(); 
+
+                while (restantes.length > 0) {
+                    let closestIdx = 0;
+                    let minDist = Infinity;
+                    for (let i = 0; i < restantes.length; i++) {
+                        const d = Math.hypot(restantes[i].lat - atual.lat, restantes[i].lon - atual.lon);
+                        if (d < minDist) { minDist = d; closestIdx = i; }
+                    }
+                    atual = restantes.splice(closestIdx, 1)[0];
+                    ordenados.push(atual.nome);
+                }
+
+                pontos = ordenados;
+                atualizarUI();
+                gerarBotoesMaps(base, bairro);
+                alert("Rota Otimizada!");
+
+            } catch (err) {
+                alert("Erro: " + err.message);
+            } finally {
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        function gerarBotoesMaps(base, bairro) {
+            const container = document.getElementById('linksMaps');
+            container.innerHTML = '<label style="margin:15px 0 5px; display:block">Links de GPS (Trechos):</label>';
+            
+            const paradasPorTrecho = 9; 
+            let inicioAtual = base;
+
+            for (let t = 0; t < 8; t++) {
+                let startIdx = t * paradasPorTrecho;
+                if (startIdx >= pontos.length) break;
+
+                let trechoDestinos = pontos.slice(startIdx, startIdx + paradasPorTrecho);
+                let destinoFinal = trechoDestinos[trechoDestinos.length - 1];
+                let intermediarios = trechoDestinos.slice(0, -1);
+
+                const localBase = encodeURIComponent(inicioAtual + ', ' + bairro + ', Boa Vista, RR');
+                const localDestino = encodeURIComponent(destinoFinal + ', ' + bairro + ', Boa Vista, RR');
+                const waypoints = intermediarios.map(p => encodeURIComponent(p + ', ' + bairro + ', Boa Vista, RR')).join('|');
+
+                const urlNavegacao = `https://www.google.com.br/maps/dir/?api=1&origin=${localBase}&destination=${localDestino}&waypoints=${waypoints}&travelmode=driving`;
+                const urlIframe = `https://www.google.com/maps?saddr=${localBase}&daddr=${localDestino}+to:${waypoints.replace(/\|/g, '+to:')}&output=embed`;
+
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-maps';
+                btn.innerHTML = `🚗 VER / INICIAR TRECHO ${t + 1}`;
+                
+                btn.onclick = () => {
+                    document.getElementById('mapaFrame').src = urlIframe;
+                    setTimeout(() => {
+                        if(confirm("Deseja abrir no GPS do Google Maps?")) {
+                            window.open(urlNavegacao, '_blank');
+                        }
+                    }, 400);
+                };
+                
+                container.appendChild(btn);
+                inicioAtual = destinoFinal; 
+            }
+        }
+    </script>
+</body>
+</html>
