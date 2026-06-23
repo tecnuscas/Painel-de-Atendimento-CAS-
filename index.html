@@ -98,6 +98,9 @@
 
         .btn-nav:hover:not(.active) { background: rgba(255,255,255,0.05); color: #fff; }
 
+        /* Estilo para links que abrem fora do painel */
+        .btn-external i { color: var(--accent-blue); }
+
         .btn-sair { 
             background: rgba(214, 48, 49, 0.1); color: var(--danger); 
             border: 1px solid rgba(214, 48, 49, 0.2); padding: 14px; 
@@ -176,10 +179,10 @@
         <div class="nav-group">
             <div class="nav-label">Territórios</div>
             <div class="nav-item active">
-                <button class="btn-nav" onclick="carregar('https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o', this.parentElement)">
+                <button class="btn-nav" onclick="carregar('vila-jardim.html', this.parentElement)">
                     <i class="bi bi-geo-alt"></i> Vila Jardim
                 </button>
-                <button class="btn-pop" onclick="abrirNova('https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o')"><i class="bi bi-box-arrow-up-right"></i></button>
+                <button class="btn-pop" onclick="abrirNova('vila-jardim.html')"><i class="bi bi-box-arrow-up-right"></i></button>
             </div>
             <div class="nav-item">
                 <button class="btn-nav" onclick="carregar('cidade-satelite.html', this.parentElement)">
@@ -192,6 +195,15 @@
                     <i class="bi bi-map"></i> Gerador de Rotas
                 </button>
                 <button class="btn-pop" onclick="abrirNova('mapa_rotas.html')"><i class="bi bi-box-arrow-up-right"></i></button>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-label">Sites Externos</div>
+            <div class="nav-item">
+                <button class="btn-nav btn-external" onclick="abrirNova('https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o')">
+                    <i class="bi bi-globe"></i> Site CAS Vila Jardim
+                </button>
             </div>
         </div>
 
@@ -263,7 +275,7 @@
     </aside>
 
     <div class="wrapper">
-        <iframe id="content-frame" src="https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o" onload="this.style.opacity='1'"></iframe>
+        <iframe id="content-frame" src="vila-jardim.html" onload="this.style.opacity='1'"></iframe>
 
         <div class="fab-container" id="fabDrive">
             <button class="fab-main" onclick="toggleFab()">
