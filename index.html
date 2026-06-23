@@ -16,6 +16,7 @@
     <style>
         :root {
             --primary: #00b894;
+            --primary-hover: #00a884;
             --primary-light: #55efc4;
             --bg-dark: #0f1418;
             --sidebar-bg: #161d23;
@@ -175,10 +176,10 @@
         <div class="nav-group">
             <div class="nav-label">Territórios</div>
             <div class="nav-item active">
-                <button class="btn-nav" onclick="carregar('https://sites.google.com/view/painel-cas-vila-jardim/p%C3%A1gina-inicial', this.parentElement)">
+                <button class="btn-nav" onclick="carregar('https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o', this.parentElement)">
                     <i class="bi bi-geo-alt"></i> Vila Jardim
                 </button>
-                <button class="btn-pop" onclick="abrirNova('https://sites.google.com/view/painel-cas-vila-jardim/p%C3%A1gina-inicial')"><i class="bi bi-box-arrow-up-right"></i></button>
+                <button class="btn-pop" onclick="abrirNova('https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o')"><i class="bi bi-box-arrow-up-right"></i></button>
             </div>
             <div class="nav-item">
                 <button class="btn-nav" onclick="carregar('cidade-satelite.html', this.parentElement)">
@@ -262,7 +263,7 @@
     </aside>
 
     <div class="wrapper">
-        <iframe id="content-frame" src="https://sites.google.com/view/painel-cas-vila-jardim/p%C3%A1gina-inicial"></iframe>
+        <iframe id="content-frame" src="https://sites.google.com/view/painel-cas-vila-jardim/localiza%C3%A7%C3%A3o" onload="this.style.opacity='1'"></iframe>
 
         <div class="fab-container" id="fabDrive">
             <button class="fab-main" onclick="toggleFab()">
@@ -304,8 +305,7 @@
             setTimeout(() => {
                 const cacheBuster = url.includes('?') ? '&' : '?';
                 frame.src = url.startsWith('http') ? url : url + cacheBuster + 'v=' + Date.now();
-                frame.style.opacity = '1';
-            }, 300);
+            }, 150);
 
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             elemento.classList.add('active');
